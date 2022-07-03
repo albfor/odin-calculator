@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "jest": "^28.1.2",
+    "prettier": "^2.7.1"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
