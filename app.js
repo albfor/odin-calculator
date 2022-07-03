@@ -23,5 +23,5 @@ module.exports = {
 	subtract,
 	multiply,
 	divide,
-	operate,
+	operate
 };
