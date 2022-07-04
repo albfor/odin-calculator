@@ -44,6 +44,7 @@ function init() {
 	});
 
 	document.getElementById('evaluate').addEventListener('click', () => {
+		if (a === undefined || operator === '') return;
 		a = operate(operator, a, display.value);
 		display.value = a;
 		lastOperator = true;
