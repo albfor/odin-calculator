@@ -31,6 +31,8 @@ function operate(operation, a, b) {
 			return subtract(a, b);
 		case "X":
 			return multiply(a, b);
+		case "*":
+			return multiply(a, b);
 		case "/":
 			return divide(a, b);
 	}
@@ -75,6 +77,38 @@ function init() {
 	document.getElementById("undo").addEventListener("click", () => {
 		display.value = display.value.slice(0, -1);
 	});
+
+	document.addEventListener('keydown', (event) => {
+		const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+		const operations = ["+", "-", "/", "*"];
+
+		if (numbers.includes(event.key)) {
+			if (lastOperator) {
+				display.value = event.key;
+			} else {
+				display.value += event.key;
+			}
+			lastOperator = false;
+		}
+
+		if (operations.includes(event.key)) {
+			if (a === undefined) {
+				a = display.value;
+			} else {
+				a = operate(operator, a, display.value);
+			}
+
+			operator = event.key;
+			lastOperator = true;
+		}
+
+		if (event.key === "Enter") {
+			if (a === undefined || operator === "") return;
+			a = operate(operator, a, display.value);
+			display.value = a;
+			lastOperator = true;
+		}
+	});
 }
 
 function clear() {
@@ -83,15 +117,19 @@ function clear() {
 	lastOperator = true;
 }
 
-function handleOperationClick() {
+function updateOperation(op) {
 	if (a === undefined) {
 		a = display.value;
 	} else {
 		a = operate(operator, a, display.value);
 		display.value = a;
 	}
-	operator = this.textContent;
+	operator = op;
 	lastOperator = true;
+}
+
+function handleOperationClick() {
+	updateOperation(this.textContent);
 }
 
 module.exports = {
