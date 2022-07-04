@@ -38,6 +38,9 @@ button {
 	flex-direction: column;
 }
 
+#clear,
 #zero {
 	flex-grow: 1;
 }
+
+

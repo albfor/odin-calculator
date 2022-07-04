@@ -1,7 +1,7 @@
 let lastOperator = true;
-let operator = '';
+let operator = "";
 let a;
-const display = document.getElementById('display');
+const display = document.getElementById("display");
 
 init();
 
@@ -38,21 +38,21 @@ function operate(operation, a, b) {
 
 function init() {
 	display.value = 0;
-	const operations = document.querySelectorAll('.operator');
-	operations.forEach(operator => {
-		operator.addEventListener('click', handleOperationClick);
+	const operations = document.querySelectorAll(".operator");
+	operations.forEach((operator) => {
+		operator.addEventListener("click", handleOperationClick);
 	});
 
-	document.getElementById('evaluate').addEventListener('click', () => {
-		if (a === undefined || operator === '') return;
+	document.getElementById("evaluate").addEventListener("click", () => {
+		if (a === undefined || operator === "") return;
 		a = operate(operator, a, display.value);
 		display.value = a;
 		lastOperator = true;
 	});
 
-	const numbers = document.querySelectorAll('.number');
-	numbers.forEach(n => {
-		n.addEventListener('click', (event) => {
+	const numbers = document.querySelectorAll(".number");
+	numbers.forEach((n) => {
+		n.addEventListener("click", (event) => {
 			if (lastOperator) {
 				display.value = event.target.textContent;
 			} else {
@@ -62,21 +62,24 @@ function init() {
 		});
 	});
 
-	document.getElementById('clear').addEventListener('click', clear);
+	document.getElementById("clear").addEventListener("click", clear);
 
-	document.getElementById('decimal').addEventListener('click', (event) => {
+	document.getElementById("decimal").addEventListener("click", (event) => {
 		for (let i = 0; i < display.value.length; i++) {
-			if (display.value.charAt(i) === '.')
-				return;
+			if (display.value.charAt(i) === ".") return;
 		}
 
 		display.value += event.target.textContent;
-	})
+	});
+
+	document.getElementById("undo").addEventListener("click", () => {
+		display.value = display.value.slice(0, -1);
+	});
 }
 
 function clear() {
 	a = undefined;
-	display.value = '0';
+	display.value = "0";
 	lastOperator = true;
 }
 
@@ -91,12 +94,10 @@ function handleOperationClick() {
 	lastOperator = true;
 }
 
-
-
 module.exports = {
 	add,
 	subtract,
 	multiply,
 	divide,
-	operate
+	operate,
 };
