@@ -40,75 +40,71 @@ function operate(operation, a, b) {
 
 function init() {
 	display.value = 0;
-	const operations = document.querySelectorAll(".operator");
-	operations.forEach((operator) => {
-		operator.addEventListener("click", handleOperationClick);
-	});
+	document.getElementById("evaluate").addEventListener("click", evaluate);
+	document.getElementById("clear").addEventListener("click", clear);
+	document.getElementById("decimal").addEventListener("click", handleDecimal);
+	document.getElementById("undo").addEventListener("click", handleUndo);
+	initNumber();
+	initOperator();
+	initKeyboard();
+}
 
-	document.getElementById("evaluate").addEventListener("click", () => {
-		if (a === undefined || operator === "") return;
-		a = operate(operator, a, display.value);
-		display.value = a;
-		lastOperator = true;
-	});
-
+function initNumber() {
 	const numbers = document.querySelectorAll(".number");
 	numbers.forEach((n) => {
 		n.addEventListener("click", (event) => {
-			if (lastOperator) {
-				display.value = event.target.textContent;
-			} else {
-				display.value += event.target.textContent;
-			}
-			lastOperator = false;
+			handleNumber(event.target.textContent);
 		});
 	});
+}
 
-	document.getElementById("clear").addEventListener("click", clear);
-
-	document.getElementById("decimal").addEventListener("click", (event) => {
-		for (let i = 0; i < display.value.length; i++) {
-			if (display.value.charAt(i) === ".") return;
-		}
-
-		display.value += event.target.textContent;
+function initOperator() {
+	const operations = document.querySelectorAll(".operator");
+	operations.forEach((operator) => {
+		operator.addEventListener("click", (event) => {
+			handleOperation(event.target.textContent);
+		});
 	});
+}
 
-	document.getElementById("undo").addEventListener("click", () => {
-		display.value = display.value.slice(0, -1);
-	});
-
-	document.addEventListener('keydown', (event) => {
+function initKeyboard() {
+	document.addEventListener("keydown", (event) => {
+		const key = event.key;
 		const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 		const operations = ["+", "-", "/", "*"];
 
-		if (numbers.includes(event.key)) {
-			if (lastOperator) {
-				display.value = event.key;
-			} else {
-				display.value += event.key;
-			}
-			lastOperator = false;
+		if (numbers.includes(key)) {
+			handleNumber(key);
 		}
 
-		if (operations.includes(event.key)) {
-			if (a === undefined) {
-				a = display.value;
-			} else {
-				a = operate(operator, a, display.value);
-			}
-
-			operator = event.key;
-			lastOperator = true;
+		if (operations.includes(key)) {
+			handleOperation(key);
 		}
 
-		if (event.key === "Enter") {
-			if (a === undefined || operator === "") return;
-			a = operate(operator, a, display.value);
-			display.value = a;
-			lastOperator = true;
+		if (key === "Enter") {
+			evaluate();
+		}
+
+		if (key === ".") {
+			handleDecimal();
+		}
+
+		if (key === "Backspace") {
+			handleUndo();
 		}
 	});
+}
+
+function handleUndo() {
+	display.value = display.value.slice(0, -1);
+}
+
+function handleDecimal() {
+	for (let i = 0; i < display.value.length; i++) {
+		if (display.value.charAt(i) === ".") return;
+	}
+
+	display.value += ".";
 }
 
 function clear() {
@@ -117,7 +113,23 @@ function clear() {
 	lastOperator = true;
 }
 
-function updateOperation(op) {
+function evaluate() {
+	if (a === undefined || operator === "") return;
+	a = operate(operator, a, display.value);
+	display.value = a;
+	lastOperator = true;
+}
+
+function handleNumber(num) {
+	if (lastOperator) {
+		display.value = num;
+	} else {
+		display.value += num;
+	}
+	lastOperator = false;
+}
+
+function handleOperation(op) {
 	if (a === undefined) {
 		a = display.value;
 	} else {
@@ -126,10 +138,6 @@ function updateOperation(op) {
 	}
 	operator = op;
 	lastOperator = true;
-}
-
-function handleOperationClick() {
-	updateOperation(this.textContent);
 }
 
 module.exports = {
