@@ -1,5 +1,6 @@
+let lastOperator = true;
 let operator = '';
-let a, b = 0;
+let a;
 const display = document.getElementById('display');
 
 init();
@@ -39,30 +40,37 @@ function init() {
 	display.value = 0;
 	const operations = document.querySelectorAll('.operator');
 	operations.forEach(operator => {
-		operator.addEventListener('click', setOperation);
+		operator.addEventListener('click', handleOperationClick);
 	});
 
-	document.getElementById('execute').addEventListener('click', () => {
-		b = display.value;
-		display.value = operate(operator, a, b);
+	document.getElementById('evaluate').addEventListener('click', () => {
+		a = operate(operator, a, display.value);
+		display.value = a;
+		lastOperator = true;
 	});
 
 	const numbers = document.querySelectorAll('.number');
 	numbers.forEach(n => {
 		n.addEventListener('click', (event) => {
-			if (display.value === '0') {
+			if (lastOperator) {
 				display.value = event.target.textContent;
 			} else {
 				display.value += event.target.textContent;
 			}
+			lastOperator = false;
 		});
 	});
 }
 
-function setOperation() {
+function handleOperationClick() {
+	if (a === undefined) {
+		a = display.value;
+	} else {
+		a = operate(operator, a, display.value);
+		display.value = a;
+	}
 	operator = this.textContent;
-	a = display.value;
-	display.value = 0;
+	lastOperator = true;
 }
 
 
