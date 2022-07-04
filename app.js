@@ -63,6 +63,15 @@ function init() {
 	});
 
 	document.getElementById('clear').addEventListener('click', clear);
+
+	document.getElementById('decimal').addEventListener('click', (event) => {
+		for (let i = 0; i < display.value.length; i++) {
+			if (display.value.charAt(i) === '.')
+				return;
+		}
+
+		display.value += event.target.textContent;
+	})
 }
 
 function clear() {
