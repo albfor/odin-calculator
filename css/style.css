@@ -1,7 +1,14 @@
+* {
+	font-family: "Roboto";
+	font-size: 30px;
+}
 .calculator {
+	background-color: #CBBAED;
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
+	padding: 5px;
+	width: 210px;
 }
 
 .display input {
@@ -43,4 +50,20 @@ button {
 	flex-grow: 1;
 }
 
+#undo {
+	background-color: #E9DF00;
+}
+
+#clear {
+	background-color: #FB5012;
+}
+
+.operator,
+#evaluate {
+	background: #03FCBA;
+}
+
+.number {
+	background-color: #01FDF6;
+}
 
