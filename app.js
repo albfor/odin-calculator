@@ -60,6 +60,14 @@ function init() {
 			lastOperator = false;
 		});
 	});
+
+	document.getElementById('clear').addEventListener('click', clear);
+}
+
+function clear() {
+	a = undefined;
+	display.value = '0';
+	lastOperator = true;
 }
 
 function handleOperationClick() {
